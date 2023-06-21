@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'book/form.html' import book_form %}
+
+{% block content %}
+<h1 class="my-4">Редактирование пользователя</h1>
+{{book_form(book, url_for('book_update', book_id=book.id), roles)}}
+{% endblock %}

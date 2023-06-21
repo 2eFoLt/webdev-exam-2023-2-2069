@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Просмотр книги</h1>
+<table class="table">
+    <tbody>
+    <tr>
+        <td>Название</td>
+        <td>{{book.name}}</td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td>{{book.description}}</td>
+    </tr>
+    <tr>
+        <td>Год издания</td>
+        <td>{{book.year}}</td>
+    </tr>
+    <tr>
+        <td>Жанр</td>
+        <td>{{genre.name}}</td>
+    </tr>
+    <tr>
+        <td>Автор</td>
+        <td>{{author.name}}</td>
+    </tr>
+    <tr>
+        <td>Рейтинг</td>
+        <td>{{ "%.2f" | format(book.rating) }}</td>
+    </tr>
+    </tbody>
+</table>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 col-md-6 col-12 pb-4">
+                <h1>Рецензии</h1>
+                {% for review in reviews %}
+                <div class="comment mt-4 text-justify float-left">
+                    <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+                    <h4>{{review.user.full_name}}</h4>
+                    <span>{{review.created_at}} ★ {{review.given_rating}}</span>
+                    <br>
+                    <p>{{review.text}}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% if current_user.is_authenticated %}
+            <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                <form id="algin-form" method="POST">
+                    {% if user_review == None %}
+                    <div class="form-group">
+                        <h4>Напишите рецензию на данную книгу</h4>
+                        <label for="text">Текст рецензии: </label>
+                        <textarea name="text" id="text" cols="30" rows="5" class="form-control"></textarea>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="given_rating" id="star1"
+                               value=1>
+                        <label class="form-check-label" for="star1">1★</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="given_rating" id="star2"
+                               value=2>
+                        <label class="form-check-label" for="star2">2★</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="given_rating" id="star3"
+                               value=3 checked>
+                        <label class="form-check-label" for="star3">3★</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="given_rating" id="star4"
+                               value=4>
+                        <label class="form-check-label" for="star4">4★</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="given_rating" id="star5"
+                               value=5>
+                        <label class="form-check-label" for="star5">5★</label>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <input type="submit" class="btn btn-dark" value="Сохранить">
+                    </div>
+                    {% else %}
+                    <div class="darker mt-4 text-justify">
+                        <h4>Ваша рецензия:</h4>
+                        <span>{{user_review.created_at}} ★ {{user_review.given_rating}}</span>
+                        <br>
+                        <p>{{user_review.text}}</p>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

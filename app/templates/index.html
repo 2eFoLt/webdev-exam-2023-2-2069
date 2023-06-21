@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <div class="nav-scroller py-1 mb-3 border-bottom">
+        <nav class="nav nav-underline justify-content-between">
+            {% for genre in genres %}
+            <a class="nav-item nav-link link-body-emphasis {%if selected == genre.id%} active {% endif %}"
+               href="{{url_for('sortby', genre_id=genre.id)}}">{{genre.name}}</a>
+            {% endfor %}
+        </nav>
+    </div>
+</div>
+
+<main class="container">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <div class="col-lg-6 px-0">
+            <h1 class="display-4 fst-italic">Экзаменационная работа</h1>
+            <p class="lead my-3">Выполнил: Флягин Е.К., гр. 211-352</p>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        {% for book in books %}
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{book.genre.name}}</strong>
+                    <h3 class="mb-0">{{book.name}}</h3>
+                    <div class="mb-1 text-body-secondary">{{book.author.name}}, {{book.year}}</div>
+                    <p class="mb-1 rating">Средний рейтинг:
+                        <span>★</span> <span>{{ "%.2f" | format(book.rating) }}</span>
+                    </p>
+                    <p class="mb-1">Кол-во рецензий: {{book.rating_num}}</p>
+                    <p class="card-text mb-auto">{{book.description}}</p>
+                    <a href="{{url_for('book.book_show', book_id=book.id)}}" class="icon-link gap-1 icon-link-hover stretched-link">
+                        Подробнее о книге
+                        <svg class="bi">
+                            <use xlink:href="#chevron-right"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                         role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                         focusable="false"><title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#55595c"/>
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}
