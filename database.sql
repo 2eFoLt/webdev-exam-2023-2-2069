@@ -50,7 +50,7 @@ CREATE TABLE `authors` (
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_authors_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `authors` (
 
 LOCK TABLES `authors` WRITE;
 /*!40000 ALTER TABLE `authors` DISABLE KEYS */;
-INSERT INTO `authors` VALUES (2,'Геннадий Крокодил'),(1,'Палата №13'),(3,'Терентий');
+INSERT INTO `authors` VALUES (2,'Геннадий Крокодил'),(4,'Кот Бегемот'),(1,'Палата №13'),(3,'Терентий');
 /*!40000 ALTER TABLE `authors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +90,7 @@ CREATE TABLE `book` (
   CONSTRAINT `book_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE CASCADE,
   CONSTRAINT `book_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE CASCADE,
   CONSTRAINT `book_ibfk_3` FOREIGN KEY (`cover_id`) REFERENCES `cover` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES (6,'От зарплаты до зарплаты','Финансовые походы','2023','Новый дом',21,2,4,'0551b627-54b7-406d-8b90-d135be6e27cf',1,1),(7,'Сегодня дома','Нет','2023','Плакали всей маршруткой',1,3,4,'7698ada9-f965-4b65-88a8-68a55186bbd7',5,1),(8,'Как проснуться к первой и не умереть','Ещё не придумал','2023','Политех',2,1,1,'c8bc4353-7ea2-4ef2-ac66-5e6b6964977e',2,1);
+INSERT INTO `book` VALUES (6,'От зарплаты до зарплаты','Трагичная история','2005','Новый дом',21,2,2,'0551b627-54b7-406d-8b90-d135be6e27cf',4,2),(7,'История одной пятилетки','Как завершить проект за 2 дня и не сойти с ума','2023','Плакали всей маршруткой',1,4,4,'7698ada9-f965-4b65-88a8-68a55186bbd7',8,2),(8,'Как проснуться к первой и не умереть','Пособие по выживанию в ВУЗе','2015','Политех',2,1,1,'c8bc4353-7ea2-4ef2-ac66-5e6b6964977e',9,3),(17,'Кто украл стипендию и другие сказки','А здесь будет просто обычное описание','1905','Новый дом',165,3,3,'322a6671-bea5-45a8-af71-eb59797d6e38',0,0);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,7 +125,7 @@ CREATE TABLE `cover` (
 
 LOCK TABLES `cover` WRITE;
 /*!40000 ALTER TABLE `cover` DISABLE KEYS */;
-INSERT INTO `cover` VALUES ('0551b627-54b7-406d-8b90-d135be6e27cf','aeRYdJPJwvY.jpg','image/jpeg','84b7cb589065694fbb49dfc740586011'),('7698ada9-f965-4b65-88a8-68a55186bbd7','006.png','image/png','631232774914314ddd9c9edb37487537'),('c8bc4353-7ea2-4ef2-ac66-5e6b6964977e','smvWkf0QPLA.jpg','image/jpeg','b22ac6409049627fbe28b3de2c13a95b');
+INSERT INTO `cover` VALUES ('0551b627-54b7-406d-8b90-d135be6e27cf','aeRYdJPJwvY.jpg','image/jpeg','84b7cb589065694fbb49dfc740586011'),('07264526-fd8f-48f0-99a9-1b21abb635dd','YmasCcn8624.jpg','image/jpeg','65d25dbf5ec6a5768487c63c10c519d9'),('322a6671-bea5-45a8-af71-eb59797d6e38','o7_QbzOr3FA.jpg','image/jpeg','7648cf8983a6a761822db2b144868aa5'),('7698ada9-f965-4b65-88a8-68a55186bbd7','006.png','image/png','631232774914314ddd9c9edb37487537'),('c8bc4353-7ea2-4ef2-ac66-5e6b6964977e','smvWkf0QPLA.jpg','image/jpeg','b22ac6409049627fbe28b3de2c13a95b');
 /*!40000 ALTER TABLE `cover` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +173,7 @@ CREATE TABLE `reviews` (
   KEY `reviews_ibfk_1` (`book_id`),
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +182,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (44,'фцфмц',1,6,1,'2023-06-25 14:27:03'),(45,'фмц',5,7,1,'2023-06-25 14:27:08'),(46,'й3м3ейм',2,8,1,'2023-06-25 14:27:16');
+INSERT INTO `reviews` VALUES (44,'фцфмц',1,6,1,'2023-06-25 14:27:03'),(45,'фмц',5,7,1,'2023-06-25 14:27:08'),(46,'й3м3ейм',2,8,1,'2023-06-25 14:27:16'),(48,'*Moder markdown review*',3,7,3,'2023-06-25 17:43:16'),(49,'* li1\n* li2\n* li3\n* markdown test',3,8,3,'2023-06-25 17:44:11'),(50,'User review\n&lt;script&gt;SCRIPTED&lt;/script&gt;\nbleach test',3,6,2,'2023-06-25 17:44:59'),(51,'*&lt;script&gt;&lt;/script&gt;*\nbleach+EasyMD test',4,8,2,'2023-06-25 17:45:33');
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-25 19:25:42
+-- Dump completed on 2023-06-25 21:09:09
