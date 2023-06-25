@@ -11,8 +11,6 @@ class UsersPolicy:
     def show(self):
         if current_user.is_admin():
             return True
-        if str(current_user.id) == str(self.record.id):
-            return True
         return False
 
     def delete(self):

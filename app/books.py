@@ -118,7 +118,7 @@ def book_delete(book_id):
         except SQLAlchemyError as er:
             db.session.rollback()
             print(f'\n\n{er}\n\n')
-            flash(er.__repr__())
+            flash(f'File upload error!', 'warning')
             return redirect(url_for('index'))
         return redirect(url_for('index'))
 
@@ -141,7 +141,7 @@ def book_show(book_id):
             db.session.commit()
         except SQLAlchemyError as er:
             db.session.rollback()
-            flash(er.__repr__())
+            flash(f'File upload error!', 'warning')
         return redirect(url_for('book.book_show', book_id=book_id))
     if not current_user.is_anonymous:
         user = get_first(db.session.query(User).filter_by(id=current_user.id))
