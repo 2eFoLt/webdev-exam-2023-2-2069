@@ -12,6 +12,19 @@ def drop_by_name(filename):
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
 
+def log(item):
+    print(f'\n\n\n{item}\n\n\n')
+
+
+def to_type(iterable, t_type):
+    if t_type == 'int':
+        return [int(item) for item in iterable]
+    elif t_type == 'str':
+        return [str(item) for item in iterable]
+    else:
+        return iterable
+
+
 def whiteclear(iterable_object):
     if type(iterable_object) == dict:
         for key in iterable_object.keys():

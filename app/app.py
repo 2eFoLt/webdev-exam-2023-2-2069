@@ -31,29 +31,19 @@ app.register_blueprint(book_bp)
 
 init_login_manager(app)
 
-from models import Book, Cover, Genre
+from models import Book, Cover, Genre, Book2Genre
 
 
 @app.route('/')
 def index():
+    b2g = db.session.execute(db.select(Book2Genre)).scalars()
     books = db.session.query(Book).order_by(desc(Book.year))
     genres = db.session.execute(db.select(Genre)).scalars()
     return render_template(
         'index.html',
         books=books,
-        genres=genres
-    )
-
-
-@app.route('/<int:genre_id>')
-def sortby(genre_id):
-    genres = db.session.execute(db.select(Genre)).scalars()
-    books = db.session.query(Book).filter_by(genre_id=genre_id)
-    return render_template(
-        'index.html',
-        books=books,
         genres=genres,
-        selected=genre_id
+        b2g=b2g
     )
 
 

@@ -24,7 +24,11 @@
     </tr>
     <tr>
         <td>Жанр</td>
-        <td>{{book.genre.name}}</td>
+        <td>
+            {% for bind in book.b2g %}
+                {{bind.genre.name}}
+            {% endfor %}
+        </td>
     </tr>
     <tr>
         <td>Автор</td>

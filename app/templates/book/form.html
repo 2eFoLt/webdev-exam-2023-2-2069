@@ -45,9 +45,7 @@
                     <label for="genre">Жанр</label>
                     <select class="form-select" name="genre_id" id="genre" multiple>
                         {% for genre in genres %}
-                        <option value="{{ genre.id }}" {%if book !=None and book.genre_id== genre.id %} selected {%
-                                endif %}>{{ genre.name }}
-                        </option>
+                        <option value="{{ genre.id }}">{{genre.name}}</option>
                         {% endfor %}
                     </select>
                 </div>

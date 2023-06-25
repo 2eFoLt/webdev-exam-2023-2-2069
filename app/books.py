@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from models import Book, Review, User, Genre, Author, Cover
+from models import Book, Review, User, Genre, Author, Cover, Book2Genre
 from app import db
-from tools import ImageSaver, drop_by_name, whiteclear
+from tools import ImageSaver, drop_by_name, whiteclear, log, to_type
 from sqlalchemy.exc import SQLAlchemyError
 
 bp = Blueprint('book', __name__, url_prefix='/book')
@@ -41,7 +41,7 @@ def book_create():
     if not current_user.can('create'):
         flash('Недостаточно прав', 'warning')
         return redirect(url_for('index'))
-    print('\n', request.form, '\n')
+    log(request.form)
     data_set = form_to_dict(['name', 'author_id', 'year', 'publishing_house', 'genre_id', 'size', 'description'])
     data_set = whiteclear(data_set)
     file_obj = request.files['cover_id']
@@ -86,8 +86,25 @@ def book_edit(book_id):
 @bp.route('/update', methods=['POST'])
 @login_required
 def book_update():
+    if not current_user.can('edit'):
+        flash('Недостаточно прав', 'warning')
+        return redirect(url_for('index'))
     data_set = form_to_dict(
-        ['id', 'cover_id', 'name', 'author_id', 'year', 'publishing_house', 'genre_id', 'size', 'description'])
+        ['id', 'cover_id', 'name', 'author_id', 'year', 'publishing_house', 'size', 'description'])
+    book = get_first(db.session.query(Book).filter_by(id=data_set['id']))
+    new_genres = to_type(request.form.getlist('genre_id'), 'int')
+    new_binds = [Book2Genre(**{'book_id': book.id, 'genre_id': genre_id}) for genre_id in new_genres]
+    try:
+        Book2Genre.query.filter_by(book_id=book.id).delete()
+        db.session.commit()
+        for bind in new_binds:
+            db.session.add(bind)
+        db.session.commit()
+    except SQLAlchemyError as er:
+        db.session.rollback()
+        print(f'\n{er}\n')
+        flash(f'File upload error!')
+        return redirect(url_for('index'))
     data_set = whiteclear(data_set)
     try:
         db.session.query(Book).filter_by(id=data_set['id']).update(data_set)

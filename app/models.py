@@ -23,6 +23,18 @@ class Genre(db.Model):
     name = db.Column(db.String(45), nullable=False, unique=True)
 
 
+class Book2Genre(db.Model):
+    __tablename__ = 'book_to_genre'
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
+    book = db.relationship('Book')
+    genre = db.relationship('Genre')
+
+    def __repr__(self):
+        return f'Bind book_id={self.book_id} : genre_id={self.genre_id}'
+
+
 class Book(db.Model):
     __tablename__ = 'book'
 
@@ -34,19 +46,23 @@ class Book(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('authors.id'), nullable=False)
     size = db.Column(db.Integer, nullable=False)
     genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=False)
-    cover_id = db.Column(db.Integer, db.ForeignKey('cover.id'), nullable=False)
+    cover_id = db.Column(db.String(100), db.ForeignKey('cover.id'), nullable=False)
     rating_sum = db.Column(db.Integer, default=0)
     rating_num = db.Column(db.Integer, default=0)
 
     author = db.relationship('Author')
     genre = db.relationship('Genre')
     cover = db.relationship('Cover')
+    b2g = db.relationship('Book2Genre')
 
     @property
     def rating(self):
         if self.rating_num <= 0:
             return 0
         return self.rating_sum / self.rating_num
+
+    def get_genres(self):
+        return [bind.genre.id for bind in self.b2g]
 
     def __repr__(self):
         return f'Book {self.name} under {self.author.name}'

@@ -66,11 +66,30 @@ CREATE TABLE `book` (
   UNIQUE KEY `uq_book_name` (`name`),
   KEY `genre_id` (`genre_id`),
   KEY `cover_id` (`cover_id`),
-  KEY `book_ibfk_1` (`author_id`),
-  CONSTRAINT `book_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `book_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `book_ibfk_3` FOREIGN KEY (`cover_id`) REFERENCES `cover` (`id`) ON DELETE CASCADE
+  KEY `fk_book_author_id_authors` (`author_id`),
+  CONSTRAINT `fk_book_author_id_authors` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`),
+  CONSTRAINT `fk_book_cover_id_cover` FOREIGN KEY (`cover_id`) REFERENCES `cover` (`id`),
+  CONSTRAINT `fk_book_genre_id_genre` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `book_to_genre`
+--
+
+DROP TABLE IF EXISTS `book_to_genre`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `book_to_genre` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_id` int(11) DEFAULT NULL,
+  `genre_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_book_to_genre_book_id_book` (`book_id`),
+  KEY `fk_book_to_genre_genre_id_genre` (`genre_id`),
+  CONSTRAINT `fk_book_to_genre_book_id_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`),
+  CONSTRAINT `fk_book_to_genre_genre_id_genre` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,8 +102,8 @@ DROP TABLE IF EXISTS `cover`;
 CREATE TABLE `cover` (
   `id` varchar(100) NOT NULL,
   `file_name` varchar(45) NOT NULL,
-  `mime_type` varchar(45) NOT NULL,
-  `md5_hash` varchar(120) NOT NULL,
+  `mime_type` varchar(100) NOT NULL,
+  `md5_hash` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -97,10 +116,10 @@ DROP TABLE IF EXISTS `genre`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `genre` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `name` varchar(45) NOT NULL COMMENT 'название жанра',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `uq_genre_name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -113,17 +132,17 @@ DROP TABLE IF EXISTS `reviews`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reviews` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `text` text NOT NULL,
-  `given_rating` int(11) NOT NULL,
-  `book_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `text` text,
+  `given_rating` int(11) DEFAULT NULL,
+  `book_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  KEY `reviews_ibfk_1` (`book_id`),
-  CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `fk_reviews_book_id_book` (`book_id`),
+  CONSTRAINT `fk_reviews_book_id_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`),
   CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,14 +170,16 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `login` varchar(45) NOT NULL,
-  `password_hash` varchar(120) NOT NULL,
-  `first_name` varchar(45) NOT NULL,
-  `middle_name` varchar(45) NOT NULL,
-  `last_name` varchar(45) NOT NULL,
-  `role_id` int(11) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `password_hash` varchar(256) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `middle_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `role_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `role_id` (`role_id`)
+  UNIQUE KEY `uq_users_login` (`login`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `fk_users_role_id_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -171,4 +192,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-25 21:09:05
+-- Dump completed on 2023-06-26  0:52:30

@@ -1,17 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="nav-scroller py-1 mb-3 border-bottom">
-    <nav class="nav nav-underline justify-content-between">
-        {% for genre in genres %}
-        <a class="nav-item nav-link link-body-emphasis {%if selected == genre.id%} active {% endif %}"
-           href="{{url_for('sortby', genre_id=genre.id)}}">{{genre.name}}</a>
-        {% endfor %}
-    </nav>
-</div>
-</div>
-
-<main class="container">
+<main class="container my-3">
     <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
         <div class="col-lg-6 px-0">
             <h1 class="display-4 fst-italic">Экзаменационная работа</h1>
@@ -24,7 +14,11 @@
         <div class="col-md-6 my-2">
             <div class="row g-0 border rounded overflow-hidden mb-4 shadow-sm position-relative" style="height: 100%">
                 <div class="col p-3 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{book.genre.name}}</strong>
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">
+                        {% for bind in book.b2g %}
+                            {{bind.genre.name}}
+                        {% endfor %}
+                    </strong>
                     <h4 class="mb-0">{{book.name}}</h4>
                     <div class="mb-1 text-body-secondary">{{book.author.name}}, {{book.year}}</div>
                     <p class="mb-1 rating">Средний рейтинг:
