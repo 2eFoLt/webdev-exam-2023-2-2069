@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 <h1>Просмотр книги</h1>
 <table class="table">
     <tbody>
@@ -55,8 +57,13 @@
                     {% if user_review == None %}
                     <div class="form-group">
                         <h4>Напишите рецензию на данную книгу</h4>
-                        <label for="text">Текст рецензии: </label>
-                        <textarea name="text" id="text" cols="30" rows="5" class="form-control"></textarea>
+                        <label for="rev_text">Текст рецензии: </label>
+                        <textarea name="text" id="rev_text" cols="30" rows="5" class="form-control"></textarea>
+                        <script>
+                              const easymde = new EasyMDE({
+                                element: document.getElementById('rev_text'),
+                              });
+                        </script>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="given_rating" id="star1"

@@ -3,7 +3,6 @@ from sqlalchemy import MetaData, desc
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash
-from flask_login import current_user
 
 # TODO: 2) class UsersPolicy, лаб5
 

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user, AnonymousUserMixin
+from flask_login import login_required, current_user
 from models import Book, Review, User, Genre, Author, Cover
 from app import db
-from tools import ImageSaver, drop_by_name
+from tools import ImageSaver, drop_by_name, whiteclear
 from sqlalchemy.exc import SQLAlchemyError
 
 bp = Blueprint('book', __name__, url_prefix='/book')
@@ -43,6 +43,7 @@ def book_create():
         return redirect(url_for('index'))
     print('\n', request.form, '\n')
     data_set = form_to_dict(['name', 'author_id', 'year', 'publishing_house', 'genre_id', 'size', 'description'])
+    data_set = whiteclear(data_set)
     file_obj = request.files['cover_id']
     image = None
     if file_obj.filename != '':
@@ -65,6 +66,7 @@ def book_create():
         db.session.rollback()
         print(f'\n{er}\n')
         flash(f'File upload error!')
+        drop_by_name(book.cover.storage_filename)
         return redirect(url_for('index'))
     return redirect(url_for('index'))
 
@@ -86,7 +88,7 @@ def book_edit(book_id):
 def book_update():
     data_set = form_to_dict(
         ['id', 'cover_id', 'name', 'author_id', 'year', 'publishing_house', 'genre_id', 'size', 'description'])
-    book = Book(**data_set)
+    data_set = whiteclear(data_set)
     try:
         db.session.query(Book).filter_by(id=data_set['id']).update(data_set)
         db.session.commit()
@@ -130,6 +132,7 @@ def book_show(book_id):
     users = db.session.execute(db.select(User)).scalars()
     if request.method == 'POST':
         data_set = form_to_dict(['text', 'given_rating'])
+        data_set = whiteclear(data_set)
         data_set['book_id'] = book_id
         data_set['user_id'] = current_user.id
         review_obj = Review(**data_set)
@@ -141,6 +144,7 @@ def book_show(book_id):
             db.session.commit()
         except SQLAlchemyError as er:
             db.session.rollback()
+            print(f'\n\n{er}\n\n')
             flash(f'File upload error!', 'warning')
         return redirect(url_for('book.book_show', book_id=book_id))
     if not current_user.is_anonymous:

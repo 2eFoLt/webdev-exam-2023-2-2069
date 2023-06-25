@@ -1,4 +1,6 @@
 {% macro book_form(book, action, genres, authors) %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 <div class="container">
     <form method="POST" action="{{action}}" enctype="multipart/form-data">
         <div class="mb-3 row">
@@ -53,6 +55,11 @@
                     <label for="description">Описание</label>
                     <textarea class="form-control flex-grow-1" name="description" id="description" cols="30"
                               rows="5" placeholder="Описание книги"></textarea>
+                    <script>
+                      const easymde = new EasyMDE({
+                        element: document.getElementById('description'),
+                      });
+                    </script>
                 </div>
             </div>
             {% if request.endpoint != 'book.book_edit' %}

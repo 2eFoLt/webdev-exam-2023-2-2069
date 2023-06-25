@@ -4,11 +4,20 @@ import os
 from werkzeug.utils import secure_filename
 from models import Cover
 from app import db, app
+from bleach import clean
 
 
 def drop_by_name(filename):
     print(filename)
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
+def whiteclear(iterable_object):
+    if type(iterable_object) == dict:
+        for key in iterable_object.keys():
+            print(key, iterable_object[key])
+            iterable_object[key] = clean(iterable_object[key])
+    return iterable_object
 
 
 class ImageSaver:

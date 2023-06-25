@@ -6,8 +6,6 @@ from flask import current_app
 from app import db
 from users_policy import UsersPolicy
 
-# TODO: 1) Роли, r/w/d rights, добавление книг, пилим с лаб4
-# TODO: 2) Работа с изображениями, лаб6
 # TODO: *3) История посещений по книге, сортировка по количеству просмотров, лаб5
 
 
