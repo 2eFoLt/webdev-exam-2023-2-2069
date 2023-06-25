@@ -25,6 +25,11 @@
                     библиотека»</a>
             </div>
             <div class="col-5 d-flex justify-content-end align-items-center">
+                {% if current_user.is_authenticated %}
+                    {% if current_user.is_admin() %}
+                        <a class="btn btn-success mx-2" href="{{url_for('book.book_new')}}">Добавить книгу</a>
+                    {% endif %}
+                {% endif %}
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         {% if current_user.is_authenticated %}
