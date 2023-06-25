@@ -1,9 +1,9 @@
-from flask import Flask, render_template, send_from_directory, redirect, url_for
+from flask import Flask, render_template, send_from_directory, redirect, url_for, request
 from sqlalchemy import MetaData, desc
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash
-
+from math import ceil
 # TODO: 2) class UsersPolicy, лаб5
 
 app = Flask(__name__)
@@ -36,11 +36,18 @@ from models import Book, Cover, Genre, Book2Genre
 
 @app.route('/')
 def index():
+
+    page = request.args.get('page', 1, type=int)
+    books = db.session.execute(
+                db.session.query(Book).order_by(desc(Book.year)).offset(10 * (page - 1)).limit(10)).scalars()
+    db_counter = db.session.query(Book).count()
+    page_count = ceil(db_counter / 10)
     b2g = db.session.execute(db.select(Book2Genre)).scalars()
-    books = db.session.query(Book).order_by(desc(Book.year))
     genres = db.session.execute(db.select(Genre)).scalars()
     return render_template(
         'index.html',
+        page=page,
+        page_count=page_count,
         books=books,
         genres=genres,
         b2g=b2g
