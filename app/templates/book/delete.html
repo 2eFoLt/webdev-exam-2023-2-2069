@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <h1>Удаление книги</h1>
+    <p class="lead">Вы уверены, что хотите удалить данную книгу?</p>
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>{{book.name}}</td>
+        </tr>
+        <tr>
+            <td>Описание</td>
+            <td>{{book.description}}</td>
+        </tr>
+        <tr>
+            <td>Год издания</td>
+            <td>{{book.year}}</td>
+        </tr>
+        <tr>
+            <td>Жанр</td>
+            <td>{{book.genre.name}}</td>
+        </tr>
+        <tr>
+            <td>Автор</td>
+            <td>{{book.author.name}}</td>
+        </tr>
+        <tr>
+            <td>Рейтинг</td>
+            <td>{{ "%.2f" | format(book.rating) }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="lead">
+    <form method="POST" enctype="multipart/form-data">
+        <input type="submit" class="btn btn-danger rounded-pill px-3" value="Да">
+        <a href="{{url_for('index')}}" class="btn btn-secondary rounded-pill px-3">Нет</a>
+    </form>
+    </p>
+</div>
+{% endblock %}
