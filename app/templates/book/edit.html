@@ -2,6 +2,6 @@
 {% from 'book/form.html' import book_form %}
 
 {% block content %}
-<h1 class="my-4">Редактирование пользователя</h1>
-{{book_form(book, url_for('book_update', book_id=book.id), roles)}}
+<h2 class="my-3 text-center text-uppercase font-weight-bold">Изменение книги</h2>
+{{book_form(book, url_for('book.book_update', book_id=book.id), genres, authors)}}
 {% endblock %}

@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-   <div class="nav-scroller py-1 mb-3 border-bottom">
-        <nav class="nav nav-underline justify-content-between">
-            {% for genre in genres %}
-            <a class="nav-item nav-link link-body-emphasis {%if selected == genre.id%} active {% endif %}"
-               href="{{url_for('sortby', genre_id=genre.id)}}">{{genre.name}}</a>
-            {% endfor %}
-        </nav>
-    </div>
+<div class="nav-scroller py-1 mb-3 border-bottom">
+    <nav class="nav nav-underline justify-content-between">
+        {% for genre in genres %}
+        <a class="nav-item nav-link link-body-emphasis {%if selected == genre.id%} active {% endif %}"
+           href="{{url_for('sortby', genre_id=genre.id)}}">{{genre.name}}</a>
+        {% endfor %}
+    </nav>
+</div>
 </div>
 
 <main class="container">
@@ -21,31 +21,49 @@
 
     <div class="row mb-2">
         {% for book in books %}
-        <div class="col-md-6">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
+        <div class="col-md-6 my-2">
+            <div class="row g-0 border rounded overflow-hidden mb-4 shadow-sm position-relative" style="height: 100%">
+                <div class="col p-3 d-flex flex-column position-static">
                     <strong class="d-inline-block mb-2 text-primary-emphasis">{{book.genre.name}}</strong>
-                    <h3 class="mb-0">{{book.name}}</h3>
+                    <h4 class="mb-0">{{book.name}}</h4>
                     <div class="mb-1 text-body-secondary">{{book.author.name}}, {{book.year}}</div>
                     <p class="mb-1 rating">Средний рейтинг:
                         <span>★</span> <span>{{ "%.2f" | format(book.rating) }}</span>
                     </p>
                     <p class="mb-1">Кол-во рецензий: {{book.rating_num}}</p>
                     <p class="card-text mb-auto">{{book.description}}</p>
-                    <a href="{{url_for('book.book_show', book_id=book.id)}}" class="icon-link gap-1 icon-link-hover stretched-link">
-                        Подробнее о книге
-                        <svg class="bi">
-                            <use xlink:href="#chevron-right"/>
-                        </svg>
-                    </a>
+                    <div class="row justify-content-center my-1">
+                        <a href="{{url_for('book.book_show', book_id=book.id)}}"
+                           class="col btn btn-primary mx-2">
+                            Подробнее о книге
+                        </a>
+                        {% if current_user.is_authenticated %}
+                        {% if current_user.is_moderator() or current_user.is_admin() %}
+                        <a href="{{url_for('book.book_edit', book_id=book.id)}}"
+                           class="col btn btn-primary mx-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-gear-wide" viewBox="0 0 16 16">
+                                <path d="M8.932.727c-.243-.97-1.62-.97-1.864 0l-.071.286a.96.96 0 0 1-1.622.434l-.205-.211c-.695-.719-1.888-.03-1.613.931l.08.284a.96.96 0 0 1-1.186 1.187l-.284-.081c-.96-.275-1.65.918-.931 1.613l.211.205a.96.96 0 0 1-.434 1.622l-.286.071c-.97.243-.97 1.62 0 1.864l.286.071a.96.96 0 0 1 .434 1.622l-.211.205c-.719.695-.03 1.888.931 1.613l.284-.08a.96.96 0 0 1 1.187 1.187l-.081.283c-.275.96.918 1.65 1.613.931l.205-.211a.96.96 0 0 1 1.622.434l.071.286c.243.97 1.62.97 1.864 0l.071-.286a.96.96 0 0 1 1.622-.434l.205.211c.695.719 1.888.03 1.613-.931l-.08-.284a.96.96 0 0 1 1.187-1.187l.283.081c.96.275 1.65-.918.931-1.613l-.211-.205a.96.96 0 0 1 .434-1.622l.286-.071c.97-.243.97-1.62 0-1.864l-.286-.071a.96.96 0 0 1-.434-1.622l.211-.205c.719-.695.03-1.888-.931-1.613l-.284.08a.96.96 0 0 1-1.187-1.186l.081-.284c.275-.96-.918-1.65-1.613-.931l-.205.211a.96.96 0 0 1-1.622-.434L8.932.727zM8 12.997a4.998 4.998 0 1 1 0-9.995 4.998 4.998 0 0 1 0 9.996z"/>
+                            </svg>
+                        </a>
+                        {% endif %}
+                        {% if current_user.is_admin() %}
+                        <a href="{{url_for('book.book_delete', book_id=book.id)}}"
+                           class="col btn btn-primary mx-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                            </svg>
+                        </a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="col-auto d-none d-lg-block">
-                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
-                         role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
-                         focusable="false"><title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"/>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
+                <div class="col d-flex flex-column position-static">
+                    <div class="course-logo"
+                         style="background-image: url({{ url_for('image', cover_id=book.cover_id) }});">
+                    </div>
                 </div>
             </div>
         </div>

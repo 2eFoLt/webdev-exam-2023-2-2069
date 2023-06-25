@@ -3,6 +3,7 @@ from sqlalchemy import MetaData, desc
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash
+from flask_login import current_user
 
 # TODO: 2) class UsersPolicy, лаб5
 
@@ -63,8 +64,13 @@ def gen(password):
     return redirect(url_for('index'))
 
 
-@app.route('/images/<image_id>')
+@app.route('/media/<cover_id>')
 def image(cover_id):
     img = db.get_or_404(Cover, cover_id)
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                img.storage_filename)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return redirect(url_for('index'))

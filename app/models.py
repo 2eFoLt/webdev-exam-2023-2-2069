@@ -2,7 +2,9 @@ import os
 import sqlalchemy as sa
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
+from flask import current_app
 from app import db
+from users_policy import UsersPolicy
 
 # TODO: 1) Роли, r/w/d rights, добавление книг, пилим с лаб4
 # TODO: 2) Работа с изображениями, лаб6
@@ -81,7 +83,7 @@ class Review(db.Model):
 
 class Cover(db.Model):
     __tablename__ = 'cover'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(100), primary_key=True)
     file_name = db.Column(db.String(45), nullable=False)
     mime_type = db.Column(db.String(100), nullable=False)
     md5_hash = db.Column(db.String(100), nullable=False)
@@ -94,7 +96,6 @@ class Cover(db.Model):
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
-    # print(generate_password_hash('ivan123'))
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(100), nullable=False, unique=True)
     password_hash = db.Column(db.String(256), nullable=False)
@@ -112,6 +113,20 @@ class User(db.Model, UserMixin):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+
+    def is_admin(self):
+        return self.role_id == current_app.config["ADMIN_ROLE_ID"]
+
+    def is_moderator(self):
+        return self.role_id == current_app.config["MODERATOR_ROLE_ID"]
+
+    @staticmethod
+    def can(action, record=None):
+        users_policy = UsersPolicy(record)
+        method = getattr(users_policy, action, None)
+        if method:
+            return method()
+        return False
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

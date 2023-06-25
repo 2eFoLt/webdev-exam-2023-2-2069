@@ -17,6 +17,14 @@ h1, h2, h3, h4, h5, h6 {
   flex: 0 0 auto;
 }
 
+.course-logo {
+    min-width: 100px;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
 .h-250 { height: 250px; }
 @media (min-width: 768px) {
   .h-md-250 { height: 250px; }

@@ -2,8 +2,14 @@ import hashlib
 import uuid
 import os
 from werkzeug.utils import secure_filename
-from models import Course, Image
+from models import Cover
 from app import db, app
+
+
+def drop_by_name(filename):
+    print(filename)
+    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
 
 class ImageSaver:
     def __init__(self, file):
@@ -15,7 +21,7 @@ class ImageSaver:
             return image
         filename = secure_filename(self.file.filename)
         mime_type = self.file.mimetype
-        img_obj = Image(
+        img_obj = Cover(
             file_name=filename,
             mime_type=mime_type,
             md5_hash=self.md5_hash,
@@ -29,4 +35,4 @@ class ImageSaver:
     def __find_by_md5_hash(self):
         self.md5_hash = hashlib.md5(self.file.read()).hexdigest()
         self.file.seek(0)
-        return Image.query.filter(Image.md5_hash == self.md5_hash).first()
+        return Cover.query.filter(Cover.md5_hash == self.md5_hash).first()
