@@ -34,7 +34,7 @@ CREATE TABLE `alembic_version` (
 
 LOCK TABLES `alembic_version` WRITE;
 /*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
-INSERT INTO `alembic_version` VALUES ('e1e2b2e3c470');
+INSERT INTO `alembic_version` VALUES ('307328fab28c');
 /*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,6 +82,7 @@ CREATE TABLE `book` (
   `cover_id` varchar(100) NOT NULL,
   `rating_sum` int(11) DEFAULT '0',
   `rating_num` int(11) DEFAULT '0',
+  `visit_number` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_book_name` (`name`),
   KEY `genre_id` (`genre_id`),
@@ -90,7 +91,7 @@ CREATE TABLE `book` (
   CONSTRAINT `fk_book_author_id_authors` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`),
   CONSTRAINT `fk_book_cover_id_cover` FOREIGN KEY (`cover_id`) REFERENCES `cover` (`id`),
   CONSTRAINT `fk_book_genre_id_genre` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +100,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES (6,'От зарплаты до зарплаты','','2005','Новый дом',21,2,2,'0551b627-54b7-406d-8b90-d135be6e27cf',4,2),(7,'История одной пятилетки','Как завершить проект за 2 дня и не сойти с ума','2023','Плакали всей маршруткой',1,4,4,'7698ada9-f965-4b65-88a8-68a55186bbd7',8,2),(8,'Как проснуться к первой и не умереть','afa','2015','Политех',2,1,1,'c8bc4353-7ea2-4ef2-ac66-5e6b6964977e',9,3),(17,'Кто украл стипендию и другие сказки','Тестовое описание для книги','1914','Новый дом',11,3,3,'322a6671-bea5-45a8-af71-eb59797d6e38',4,1);
+INSERT INTO `book` VALUES (6,'От зарплаты до зарплаты','','2005','Новый дом',21,2,2,'0551b627-54b7-406d-8b90-d135be6e27cf',4,2,1),(7,'История одной пятилетки','Как завершить проект за 2 дня и не сойти с ума','2023','Плакали всей маршруткой',1,4,4,'7698ada9-f965-4b65-88a8-68a55186bbd7',8,2,10),(8,'Как проснуться к первой и не умереть','afa','2015','Политех',2,1,1,'c8bc4353-7ea2-4ef2-ac66-5e6b6964977e',9,3,4),(17,'Кто украл стипендию и другие сказки','Тестовое описание для книги','1914','Новый дом',11,3,3,'322a6671-bea5-45a8-af71-eb59797d6e38',4,1,1),(18,'AA','AA','1902','AA',28,2,3,'9fce6cad-70c8-4706-b9b6-0cc3b420db83',0,0,1),(19,'AB','AB','1903','AB',28,2,2,'9fce6cad-70c8-4706-b9b6-0cc3b420db83',0,0,1),(20,'AC','AC','1923','AC',14,4,3,'5a563ab4-38c6-412f-bb7f-e044be6954f0',0,0,1),(21,'AD','AD','1907','AD',14,2,1,'004b89bd-8202-4874-839a-51aa8e334fc8',0,0,1),(22,'AE','AE','1906','AE',14,1,1,'448f7266-a465-4208-ad00-4e188b1b2a27',0,0,1),(23,'AF','AF','1905','AF',28,4,3,'20ca88e8-49e3-404d-9c23-0b06ad57f8ba',0,0,2),(24,'AG','AG','1903','AG',28,1,3,'7c8fb3bd-1e8d-4eae-aeee-7094f4f3c544',0,0,1);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +155,7 @@ CREATE TABLE `cover` (
 
 LOCK TABLES `cover` WRITE;
 /*!40000 ALTER TABLE `cover` DISABLE KEYS */;
-INSERT INTO `cover` VALUES ('0551b627-54b7-406d-8b90-d135be6e27cf','aeRYdJPJwvY.jpg','image/jpeg','84b7cb589065694fbb49dfc740586011'),('07264526-fd8f-48f0-99a9-1b21abb635dd','YmasCcn8624.jpg','image/jpeg','65d25dbf5ec6a5768487c63c10c519d9'),('322a6671-bea5-45a8-af71-eb59797d6e38','o7_QbzOr3FA.jpg','image/jpeg','7648cf8983a6a761822db2b144868aa5'),('7698ada9-f965-4b65-88a8-68a55186bbd7','006.png','image/png','631232774914314ddd9c9edb37487537'),('c8bc4353-7ea2-4ef2-ac66-5e6b6964977e','smvWkf0QPLA.jpg','image/jpeg','b22ac6409049627fbe28b3de2c13a95b');
+INSERT INTO `cover` VALUES ('004b89bd-8202-4874-839a-51aa8e334fc8','dWIdiNvW-Cs.jpg','image/jpeg','8d7fcba64bce1d5d16ac5db02a8ddb9b'),('0551b627-54b7-406d-8b90-d135be6e27cf','aeRYdJPJwvY.jpg','image/jpeg','84b7cb589065694fbb49dfc740586011'),('07264526-fd8f-48f0-99a9-1b21abb635dd','YmasCcn8624.jpg','image/jpeg','65d25dbf5ec6a5768487c63c10c519d9'),('20ca88e8-49e3-404d-9c23-0b06ad57f8ba','splE2x2IFtI.jpg','image/jpeg','eb8ac8fe93168037e775288a090e600b'),('322a6671-bea5-45a8-af71-eb59797d6e38','o7_QbzOr3FA.jpg','image/jpeg','7648cf8983a6a761822db2b144868aa5'),('448f7266-a465-4208-ad00-4e188b1b2a27','bCd7CTSb3GQ.jpg','image/jpeg','368e5a8e05071c66d1ad71b1a1ad9986'),('5a563ab4-38c6-412f-bb7f-e044be6954f0','1i3XF4m_l8Y.jpg','image/jpeg','18c88563bf5753472064915434c66030'),('7698ada9-f965-4b65-88a8-68a55186bbd7','006.png','image/png','631232774914314ddd9c9edb37487537'),('7c8fb3bd-1e8d-4eae-aeee-7094f4f3c544','Q8upnC85pwQ.jpg','image/jpeg','85efae517f8da0eed7aced84e68463b7'),('9fce6cad-70c8-4706-b9b6-0cc3b420db83','1.PNG','image/png','223e940337723cf04166fbd478d66061'),('c8bc4353-7ea2-4ef2-ac66-5e6b6964977e','smvWkf0QPLA.jpg','image/jpeg','b22ac6409049627fbe28b3de2c13a95b');
 /*!40000 ALTER TABLE `cover` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,6 +273,36 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'root','pbkdf2:sha256:600000$2igivyaANJf9R2K1$e0fc95d7be099c01750548c72ddb1d31481e6dfdbe96f363fa853861919e1994','root','root','root',1),(2,'IvanovIvan','pbkdf2:sha256:600000$3uSHxqAQsSTAnKrq$b0217b90280bd5a4579500aa24c936bb1ffa8c0d6407319601ace9a8a16cd524','Иван','Иванович','Иванов',3),(3,'moder','pbkdf2:sha256:600000$TZV30PDc7YaJ4c01$2faf2a31b17ec5647d0b397baf16be97ed92838c52e3bb75cf914e7a7fecdc30','moder','moder','moder',2);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `visit_stat`
+--
+
+DROP TABLE IF EXISTS `visit_stat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `visit_stat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `visit_number` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_visit_stat_book_id_book` (`book_id`),
+  KEY `fk_visit_stat_user_id_users` (`user_id`),
+  CONSTRAINT `fk_visit_stat_book_id_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`),
+  CONSTRAINT `fk_visit_stat_user_id_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `visit_stat`
+--
+
+LOCK TABLES `visit_stat` WRITE;
+/*!40000 ALTER TABLE `visit_stat` DISABLE KEYS */;
+INSERT INTO `visit_stat` VALUES (4,7,3,10),(5,8,3,4),(6,6,3,1),(7,20,3,1),(8,22,3,1),(9,23,3,2),(10,19,3,1),(11,24,3,1),(12,18,3,1),(13,17,3,1),(14,21,3,1);
+/*!40000 ALTER TABLE `visit_stat` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -282,4 +313,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-26  0:52:33
+-- Dump completed on 2023-06-26  7:38:07

@@ -6,7 +6,27 @@ from flask import current_app
 from app import db
 from users_policy import UsersPolicy
 
-# TODO: *3) История посещений по книге, сортировка по количеству просмотров, лаб5
+
+class VisitStat(db.Model):
+    __tablename__ = 'visit_stat'
+
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    visit_number = db.Column(db.Integer, default=1)
+
+    book = db.relationship('Book')
+    user = db.relationship('User')
+
+    def is_visit_limit_reached(self):
+        return self.visit_number == 10
+
+    def add_visit(self):
+        self.visit_number += 1
+
+    def __repr__(self):
+        return f'VisitStat id={self.id} book_id={self.book_id} user_id={self.user_id} visit_n={self.visit_number}' \
+               f' limit_reached={self.is_visit_limit_reached()}'
 
 
 class Author(db.Model):
@@ -49,6 +69,7 @@ class Book(db.Model):
     cover_id = db.Column(db.String(100), db.ForeignKey('cover.id'), nullable=False)
     rating_sum = db.Column(db.Integer, default=0)
     rating_num = db.Column(db.Integer, default=0)
+    visit_number = db.Column(db.Integer, default=0)
 
     author = db.relationship('Author')
     genre = db.relationship('Genre')
@@ -60,6 +81,12 @@ class Book(db.Model):
         if self.rating_num <= 0:
             return 0
         return self.rating_sum / self.rating_num
+
+    def add_visit(self):
+        if self.visit_number is None:
+            self.visit_number = 1
+        else:
+            self.visit_number += 1
 
     def get_genres(self):
         return [bind.genre.id for bind in self.b2g]

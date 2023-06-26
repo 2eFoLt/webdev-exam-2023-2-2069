@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash
 from math import ceil
-# TODO: 2) class UsersPolicy, лаб5
+
 
 app = Flask(__name__)
 application = app
@@ -28,7 +28,6 @@ from books import bp as book_bp
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(book_bp)
-
 init_login_manager(app)
 
 from models import Book, Cover, Genre, Book2Genre
@@ -36,7 +35,7 @@ from models import Book, Cover, Genre, Book2Genre
 
 @app.route('/')
 def index():
-
+    popular_books = db.session.execute(db.session.query(Book).order_by(desc(Book.visit_number)).limit(5)).scalars()
     page = request.args.get('page', 1, type=int)
     books = db.session.execute(
                 db.session.query(Book).order_by(desc(Book.year)).offset(10 * (page - 1)).limit(10)).scalars()
@@ -49,6 +48,7 @@ def index():
         page=page,
         page_count=page_count,
         books=books,
+        popular_books=popular_books,
         genres=genres,
         b2g=b2g
     )

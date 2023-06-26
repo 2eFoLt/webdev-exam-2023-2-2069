@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from models import Book, Review, User, Genre, Author, Cover, Book2Genre
+from models import Book, Review, User, Genre, Author, Cover, Book2Genre, VisitStat
 from app import db
 from tools import ImageSaver, drop_by_name, whiteclear, log, to_type
 from sqlalchemy.exc import SQLAlchemyError
@@ -21,6 +21,35 @@ def form_to_dict(fields):
     for field in fields:
         data_set[field] = request.form.get(field)
     return data_set
+
+
+def register_visit(book_obj, user_id):
+    visit_stat = get_first(
+        db.session.query(VisitStat).filter(VisitStat.book_id == book_obj.id, VisitStat.user_id == user_id))
+    if visit_stat is None:
+        visit_obj = VisitStat(**{'book_id': book_obj.id, 'user_id': user_id})
+        book_obj.add_visit()
+        try:
+            db.session.add(visit_obj)
+            db.session.add(book_obj)
+            db.session.commit()
+        except SQLAlchemyError as er:
+            db.session.rollback()
+            print(f'\n\n{er}\n\n')
+            flash(f'Visit update error', 'warning')
+    else:
+        if not visit_stat.is_visit_limit_reached():
+            visit_stat.add_visit()
+            book_obj.add_visit()
+            try:
+                db.session.add(visit_stat)
+                db.session.add(book_obj)
+                db.session.commit()
+            except SQLAlchemyError as er:
+                db.session.rollback()
+                print(f'\n\n{er}\n\n')
+                flash(f'Visit update error', 'warning')
+    log(visit_stat)
 
 
 @bp.route('/new')
@@ -166,6 +195,7 @@ def book_show(book_id):
         return redirect(url_for('book.book_show', book_id=book_id))
     if not current_user.is_anonymous:
         user = get_first(db.session.query(User).filter_by(id=current_user.id))
+        register_visit(book_obj, user.id)
         current_user_review = get_first(db.session.query(Review).filter_by(user_id=current_user.id, book_id=book_id))
     else:
         user = None

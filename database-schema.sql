@@ -62,6 +62,7 @@ CREATE TABLE `book` (
   `cover_id` varchar(100) NOT NULL,
   `rating_sum` int(11) DEFAULT '0',
   `rating_num` int(11) DEFAULT '0',
+  `visit_number` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_book_name` (`name`),
   KEY `genre_id` (`genre_id`),
@@ -70,7 +71,7 @@ CREATE TABLE `book` (
   CONSTRAINT `fk_book_author_id_authors` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`),
   CONSTRAINT `fk_book_cover_id_cover` FOREIGN KEY (`cover_id`) REFERENCES `cover` (`id`),
   CONSTRAINT `fk_book_genre_id_genre` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,6 +183,26 @@ CREATE TABLE `users` (
   CONSTRAINT `fk_users_role_id_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `visit_stat`
+--
+
+DROP TABLE IF EXISTS `visit_stat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `visit_stat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `visit_number` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_visit_stat_book_id_book` (`book_id`),
+  KEY `fk_visit_stat_user_id_users` (`user_id`),
+  CONSTRAINT `fk_visit_stat_book_id_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`),
+  CONSTRAINT `fk_visit_stat_user_id_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -192,4 +213,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-26  0:52:30
+-- Dump completed on 2023-06-26  7:38:03
