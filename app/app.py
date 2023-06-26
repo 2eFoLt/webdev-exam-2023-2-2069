@@ -23,11 +23,13 @@ db = SQLAlchemy(app, metadata=MetaData(naming_convention=convention))
 migrate = Migrate(app, db)
 
 from auth import bp as auth_bp, init_login_manager
-
 from books import bp as book_bp
+from visits import bp as bp_visits
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(book_bp)
+app.register_blueprint(bp_visits)
+
 init_login_manager(app)
 
 from models import Book, Cover, Genre, Book2Genre

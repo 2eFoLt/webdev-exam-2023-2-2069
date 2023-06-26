@@ -34,7 +34,7 @@ CREATE TABLE `alembic_version` (
 
 LOCK TABLES `alembic_version` WRITE;
 /*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
-INSERT INTO `alembic_version` VALUES ('307328fab28c');
+INSERT INTO `alembic_version` VALUES ('5eeccc418601');
 /*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +100,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES (6,'От зарплаты до зарплаты','','2005','Новый дом',21,2,2,'0551b627-54b7-406d-8b90-d135be6e27cf',4,2,1),(7,'История одной пятилетки','Как завершить проект за 2 дня и не сойти с ума','2023','Плакали всей маршруткой',1,4,4,'7698ada9-f965-4b65-88a8-68a55186bbd7',8,2,10),(8,'Как проснуться к первой и не умереть','afa','2015','Политех',2,1,1,'c8bc4353-7ea2-4ef2-ac66-5e6b6964977e',9,3,4),(17,'Кто украл стипендию и другие сказки','Тестовое описание для книги','1914','Новый дом',11,3,3,'322a6671-bea5-45a8-af71-eb59797d6e38',4,1,1),(18,'AA','AA','1902','AA',28,2,3,'9fce6cad-70c8-4706-b9b6-0cc3b420db83',0,0,1),(19,'AB','AB','1903','AB',28,2,2,'9fce6cad-70c8-4706-b9b6-0cc3b420db83',0,0,1),(20,'AC','AC','1923','AC',14,4,3,'5a563ab4-38c6-412f-bb7f-e044be6954f0',0,0,1),(21,'AD','AD','1907','AD',14,2,1,'004b89bd-8202-4874-839a-51aa8e334fc8',0,0,1),(22,'AE','AE','1906','AE',14,1,1,'448f7266-a465-4208-ad00-4e188b1b2a27',0,0,1),(23,'AF','AF','1905','AF',28,4,3,'20ca88e8-49e3-404d-9c23-0b06ad57f8ba',0,0,2),(24,'AG','AG','1903','AG',28,1,3,'7c8fb3bd-1e8d-4eae-aeee-7094f4f3c544',0,0,1);
+INSERT INTO `book` VALUES (6,'От зарплаты до зарплаты','','2005','Новый дом',21,2,2,'0551b627-54b7-406d-8b90-d135be6e27cf',4,2,5),(7,'История одной пятилетки','Как завершить проект за 2 дня и не сойти с ума','2023','Плакали всей маршруткой',1,4,4,'7698ada9-f965-4b65-88a8-68a55186bbd7',8,2,10),(8,'Как проснуться к первой и не умереть','afa','2015','Политех',2,1,1,'c8bc4353-7ea2-4ef2-ac66-5e6b6964977e',9,3,8),(17,'Кто украл стипендию и другие сказки','Тестовое описание для книги','1914','Новый дом',11,3,3,'322a6671-bea5-45a8-af71-eb59797d6e38',4,1,1),(18,'AA','AA','1902','AA',28,2,3,'9fce6cad-70c8-4706-b9b6-0cc3b420db83',0,0,1),(19,'AB','AB','1903','AB',28,2,2,'9fce6cad-70c8-4706-b9b6-0cc3b420db83',0,0,1),(20,'AC','AC','1923','AC',14,4,3,'5a563ab4-38c6-412f-bb7f-e044be6954f0',0,0,2),(21,'AD','AD','1907','AD',14,2,1,'004b89bd-8202-4874-839a-51aa8e334fc8',0,0,4),(22,'AE','AE','1906','AE',14,1,1,'448f7266-a465-4208-ad00-4e188b1b2a27',0,0,2),(23,'AF','AF','1905','AF',28,4,3,'20ca88e8-49e3-404d-9c23-0b06ad57f8ba',0,0,2),(24,'AG','AG','1903','AG',28,1,3,'7c8fb3bd-1e8d-4eae-aeee-7094f4f3c544',0,0,2);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,6 +286,7 @@ CREATE TABLE `visit_stat` (
   `book_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `visit_number` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_visit_stat_book_id_book` (`book_id`),
   KEY `fk_visit_stat_user_id_users` (`user_id`),
@@ -300,7 +301,7 @@ CREATE TABLE `visit_stat` (
 
 LOCK TABLES `visit_stat` WRITE;
 /*!40000 ALTER TABLE `visit_stat` DISABLE KEYS */;
-INSERT INTO `visit_stat` VALUES (4,7,3,10),(5,8,3,4),(6,6,3,1),(7,20,3,1),(8,22,3,1),(9,23,3,2),(10,19,3,1),(11,24,3,1),(12,18,3,1),(13,17,3,1),(14,21,3,1);
+INSERT INTO `visit_stat` VALUES (4,7,3,10,'2023-06-20 16:08:36'),(5,8,3,8,'2023-06-04 16:08:36'),(6,6,3,5,'2023-06-17 16:08:36'),(7,20,3,2,'2023-06-21 16:08:36'),(8,22,3,2,'2023-06-08 16:08:36'),(9,23,3,2,'2023-06-26 16:08:36'),(10,19,3,1,'2023-06-04 16:08:36'),(11,24,3,2,'2023-06-01 16:08:36'),(12,18,3,1,'2023-06-02 16:08:36'),(13,17,3,1,'2023-06-03 16:08:36'),(14,21,3,4,'2023-06-25 16:08:36');
 /*!40000 ALTER TABLE `visit_stat` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -313,4 +314,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-26  7:38:07
+-- Dump completed on 2023-06-26 16:20:23

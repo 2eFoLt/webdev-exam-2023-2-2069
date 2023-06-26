@@ -196,6 +196,7 @@ CREATE TABLE `visit_stat` (
   `book_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `visit_number` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_visit_stat_book_id_book` (`book_id`),
   KEY `fk_visit_stat_user_id_users` (`user_id`),
@@ -213,4 +214,4 @@ CREATE TABLE `visit_stat` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-26  7:38:03
+-- Dump completed on 2023-06-26 16:20:20

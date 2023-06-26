@@ -14,7 +14,7 @@ class VisitStat(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     visit_number = db.Column(db.Integer, default=1)
-
+    created_at = db.Column(db.DateTime, server_default=sa.sql.func.now(), nullable=False)
     book = db.relationship('Book')
     user = db.relationship('User')
 

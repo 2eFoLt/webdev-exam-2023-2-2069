@@ -1,39 +1,26 @@
 {% extends 'base.html' %}
-{% from "pagination.html" import pagination %}
 
 {% block content %}
-
-<h1>Журнал посещений</h1>
+<h1>Статистика просмотра книг</h1>
 <table class="table">
     <thead>
         <tr>
             <th>№</th>
-            <th>Путь до страницы</th>
-            <th>Пользователь</th>
-            <th>Дата</th>
+            <th>Название книги</th>
+            <th>Автор</th>
+            <th>Кол-во посещений</th>
         </tr>
     </thead>
     <tbody>
-        {% for item in logs %}
+        {% for book in books %}
         <tr>
             <td>{{loop.index}}</td>
-            <td>{{item.path}}</td>
-            <td>{% if item.login %}
-                    {{item.login}}
-                {% else %} 
-                Неавторизованный пользователь
-                {% endif %}</td>
-            <td>{{item.created_at}}</td>
+            <td>{{book.name}}</td>
+            <td>{{book.author.name}}</td>
+            <td>{{book.visit_number}}</td>
+            <td>{{book.name}}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
-{{pagination(page, page_count, request.endpoint)}}
-
-{% if current_user.can("show_stat", user) %}
-<a class="btn btn-primary" href="{{ url_for('visits.stat') }}">Статистика по разделам сайта</a>
-<a class="btn btn-primary" href="{{ url_for('visits.stat_users') }}">Статистика по пользователям</a>
-{% endif %}
-
 {% endblock %}
