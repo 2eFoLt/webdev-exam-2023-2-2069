@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import login_required, current_user
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session
+from flask_login import login_required, current_user, AnonymousUserMixin
 from models import Book, Review, User, Genre, Author, Cover, Book2Genre, VisitStat
 from app import db
 from tools import ImageSaver, drop_by_name, whiteclear, log, to_type
@@ -14,6 +14,23 @@ def get_first(query):
 
 def get_all(query):
     return db.session.execute(query).scalars()
+
+
+def add_to_viewed(book_id):
+    current_id = session["current_id"]
+    if len(session[f"{current_id}"]) < 5:
+        session[f"{current_id}"].append(book_id)
+        if not session.modified:
+            session.modified = True
+    else:
+        if book_id not in session[f"{current_id}"]:
+            session[f"{current_id}"].pop(0)
+            session[f"{current_id}"].append(book_id)
+        else:
+            session[f"{current_id}"].remove(book_id)
+            session[f"{current_id}"].append(book_id)
+        if not session.modified:
+            session.modified = True
 
 
 def form_to_dict(fields):
@@ -193,6 +210,7 @@ def book_show(book_id):
             print(f'\n\n{er}\n\n')
             flash(f'File upload error!', 'warning')
         return redirect(url_for('book.book_show', book_id=book_id))
+    add_to_viewed(book_id)
     if not current_user.is_anonymous:
         user = get_first(db.session.query(User).filter_by(id=current_user.id))
         register_visit(book_obj, user.id)
